@@ -1,4 +1,4 @@
-let values=[], labels=[];
+let values=[], labels=[], colors=[];
 
 const createD3Chart = () => {
     const width = 700;
@@ -39,16 +39,7 @@ const createD3Chart = () => {
 
     var color = d3.scale.ordinal()
 	.domain(labels)
-	.range([
-        '#ffcd56',
-        '#ff6384',
-        '#36a2eb',
-        '#fd6b19',
-        '#67bf7d',
-        '#e0891d',
-        '#e01dd3',
-        '#6b5f6b'
-    ]);
+	.range(colors);
 
     const change = (data) => {
 
@@ -134,11 +125,12 @@ const createD3Chart = () => {
 }
 
 function getBudget() {
-    axios.get('http://localhost:3000/budget')
+    axios.get('http://localhost:3000/api/budget')
     .then(function (res) {
-        for (var i = 0; i < res.data.mybudget.length; i++) {
-            values[i] = res.data.mybudget[i].budget;
-            labels[i] = res.data.mybudget[i].title;
+        for (var i = 0; i < res.data.length; i++) {
+            values[i] = res.data[i].budget;
+            labels[i] = res.data[i].title;
+			colors[i] = res.data[i].color;
         }
         createD3Chart();
     });
